@@ -5,9 +5,6 @@ from generator import generate_pages_recursive
 from copy_static import copy_static_files
 import sys
 
-basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
-
-
 def copy_static_files(source_dir="static", dest_dir="docs"):
     # Eliminar el directorio de destino si ya existe
     if os.path.exists(dest_dir):
@@ -35,6 +32,12 @@ def copy_static_files(source_dir="static", dest_dir="docs"):
     recursive_copy(source_dir, dest_dir)
 
 def main():
+
+    default_basepath = "/"
+    basepath = default_basepath
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    
     print("Copying static files...")
     copy_static_files()
     print("Static files copied successfully!")
@@ -44,7 +47,7 @@ def main():
         shutil.rmtree("docs")
 
     copy_static_files("static", "docs")
-    generate_pages_recursive("content", "template.html", basepath)
+    generate_pages_recursive("content", "template.html", "docs", basepath)
 
 if __name__ == "__main__":
     main()
