@@ -2,9 +2,13 @@ from textnode import TextNode, TextType
 import os
 import shutil
 from generator import generate_pages_recursive
-from copy_static import copy_static_files  # asegúrate de tener esta función
+from copy_static import copy_static_files
+import sys
 
-def copy_static_files(source_dir="static", dest_dir="public"):
+basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
+
+
+def copy_static_files(source_dir="static", dest_dir="docs"):
     # Eliminar el directorio de destino si ya existe
     if os.path.exists(dest_dir):
         shutil.rmtree(dest_dir)
@@ -36,13 +40,11 @@ def main():
     print("Static files copied successfully!")
     node = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
     print(node)
-    if os.path.exists("public"):
-        shutil.rmtree("public")
+    if os.path.exists("docs"):
+        shutil.rmtree("docs")
 
-    copy_static_files("static", "public")
-    generate_pages_recursive("content", "template.html", "public")
+    copy_static_files("static", "docs")
+    generate_pages_recursive("content", "template.html", basepath)
 
 if __name__ == "__main__":
     main()
-
-
